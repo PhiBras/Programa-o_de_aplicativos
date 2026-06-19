@@ -1,0 +1,245 @@
+package petshop;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+
+public class TelaPet extends javax.swing.JFrame {
+    
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaPet.class.getName());
+
+    public TelaPet() {
+        initComponents();
+        setLocationRelativeTo(null);
+    }
+
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        btnExcluirPet = new javax.swing.JButton();
+        txtIdPet = new javax.swing.JTextField();
+        txtNomePet = new javax.swing.JTextField();
+        txtEspecie = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        btnCadastrarPet = new javax.swing.JButton();
+        btnConsultarPet = new javax.swing.JButton();
+        btnAlterarPet = new javax.swing.JButton();
+        txtRaca = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtIdClientePet = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btnExcluirPet.setText("Excluir");
+        btnExcluirPet.addActionListener(this::btnExcluirPetActionPerformed);
+        getContentPane().add(btnExcluirPet, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 90, -1));
+        getContentPane().add(txtIdPet, new org.netbeans.lib.awtextra.AbsoluteConstraints(72, 6, 160, -1));
+        getContentPane().add(txtNomePet, new org.netbeans.lib.awtextra.AbsoluteConstraints(72, 34, 160, -1));
+        getContentPane().add(txtEspecie, new org.netbeans.lib.awtextra.AbsoluteConstraints(72, 62, 160, -1));
+
+        jLabel1.setText("ID Pet:");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 9, 54, -1));
+
+        jLabel2.setText("Nome:");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 37, 54, -1));
+
+        jLabel3.setText("Especie:");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 65, 54, -1));
+
+        btnCadastrarPet.setText("Cadastrar");
+        btnCadastrarPet.addActionListener(this::btnCadastrarPetActionPerformed);
+        getContentPane().add(btnCadastrarPet, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, 90, -1));
+
+        btnConsultarPet.setText("Consultar");
+        btnConsultarPet.addActionListener(this::btnConsultarPetActionPerformed);
+        getContentPane().add(btnConsultarPet, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 150, 90, -1));
+
+        btnAlterarPet.setText("Alterar");
+        btnAlterarPet.addActionListener(this::btnAlterarPetActionPerformed);
+        getContentPane().add(btnAlterarPet, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 180, 90, -1));
+        getContentPane().add(txtRaca, new org.netbeans.lib.awtextra.AbsoluteConstraints(72, 90, 160, -1));
+
+        jLabel4.setText("Raça:");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 93, 40, -1));
+        getContentPane().add(txtIdClientePet, new org.netbeans.lib.awtextra.AbsoluteConstraints(72, 118, 160, -1));
+
+        jLabel5.setText("ID Cliente:");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 121, -1, -1));
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void btnExcluirPetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirPetActionPerformed
+        // TODO add your handling code here:
+        try {
+
+            Connection conn = Conexao.conectar();
+
+            String sql = "DELETE FROM pet WHERE id_pet=?";
+
+            PreparedStatement pst = conn.prepareStatement(sql);
+
+            pst.setInt(1, Integer.parseInt(txtIdPet.getText()));
+
+            pst.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Pet excluído!");
+
+            pst.close();
+            conn.close();
+
+        } catch (Exception e) {
+
+            JOptionPane.showMessageDialog(null, e);
+
+        }
+    }//GEN-LAST:event_btnExcluirPetActionPerformed
+
+    private void btnCadastrarPetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarPetActionPerformed
+        // TODO add your handling code here:
+        if(txtNomePet.getText().equals("") || txtEspecie.getText().equals("") || txtRaca.getText().equals("") || txtIdClientePet.getText().equals("")) {
+
+            JOptionPane.showMessageDialog(null,"Preencha todos os campos!");
+
+            return;
+        }
+        try {
+
+        Connection conn = Conexao.conectar();
+
+        String sql = "INSERT INTO pet(nome, especie, raca, id_cliente) VALUES (?, ?, ?, ?)";
+
+        PreparedStatement pst = conn.prepareStatement(sql);
+
+        pst.setString(1, txtNomePet.getText());
+        pst.setString(2, txtEspecie.getText());
+        pst.setString(3, txtRaca.getText());
+        pst.setInt(4, Integer.parseInt(txtIdClientePet.getText()));
+
+        pst.executeUpdate();
+
+        JOptionPane.showMessageDialog(null, "Pet cadastrado!");
+
+        conn.close();
+
+        } catch (Exception e) {
+
+        JOptionPane.showMessageDialog(null, e);
+
+        }
+    }//GEN-LAST:event_btnCadastrarPetActionPerformed
+
+    private void btnConsultarPetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarPetActionPerformed
+        // TODO add your handling code here:
+        try {
+
+        Connection conn = Conexao.conectar();
+
+        String sql = "SELECT * FROM pet WHERE id_pet=?";
+
+        PreparedStatement pst = conn.prepareStatement(sql);
+
+        pst.setInt(1, Integer.parseInt(txtIdPet.getText()));
+
+        ResultSet rs = pst.executeQuery();
+
+        if(rs.next()){
+
+            txtNomePet.setText(rs.getString("nome"));
+            txtEspecie.setText(rs.getString("especie"));
+            txtRaca.setText(rs.getString("raca"));
+            txtIdClientePet.setText(rs.getString("id_cliente"));
+
+        } else {
+
+            JOptionPane.showMessageDialog(null, "Pet não encontrado");
+
+        }
+
+        conn.close();
+
+        } catch (Exception e) {
+
+        JOptionPane.showMessageDialog(null, e);
+
+        }
+    }//GEN-LAST:event_btnConsultarPetActionPerformed
+
+    private void btnAlterarPetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarPetActionPerformed
+        // TODO add your handling code here:
+
+        try {
+
+        Connection conn = Conexao.conectar();
+
+        String sql = "UPDATE pet SET nome=?, especie=?, raca=?, id_cliente=? WHERE id_pet=?";
+
+        PreparedStatement pst = conn.prepareStatement(sql);
+
+        pst.setString(1, txtNomePet.getText());
+        pst.setString(2, txtEspecie.getText());
+        pst.setString(3, txtRaca.getText());
+        pst.setInt(4, Integer.parseInt(txtIdClientePet.getText()));
+        pst.setInt(5, Integer.parseInt(txtIdPet.getText()));
+
+        pst.executeUpdate();
+
+        JOptionPane.showMessageDialog(null, "Pet atualizado!");
+
+        conn.close();
+
+        } catch (Exception e) {
+
+        JOptionPane.showMessageDialog(null, e);
+
+        }
+    }//GEN-LAST:event_btnAlterarPetActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(() -> new TelaPet().setVisible(true));
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAlterarPet;
+    private javax.swing.JButton btnCadastrarPet;
+    private javax.swing.JButton btnConsultarPet;
+    private javax.swing.JButton btnExcluirPet;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JTextField txtEspecie;
+    private javax.swing.JTextField txtIdClientePet;
+    private javax.swing.JTextField txtIdPet;
+    private javax.swing.JTextField txtNomePet;
+    private javax.swing.JTextField txtRaca;
+    // End of variables declaration//GEN-END:variables
+}
