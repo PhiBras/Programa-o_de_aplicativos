@@ -4,6 +4,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenuPrincipal.class.getName());
 
+    /**
+     * Creates new form MenuPrincipal
+     */
     public MenuPrincipal() {
         initComponents();
         setLocationRelativeTo(null);
